@@ -3,7 +3,7 @@ import itertools as it
 class BlockPermutations(object):
   """
   Given a list of elements, iterate over all unique permutations, treating subsets of the elements as equivalent.
-  The algorithm works by mapping the list of elements into a list of integers [0,0,0,1,1,3,4,4,4,...] identifying
+  The algorithm works by mapping the list of elements into a list of integers [0,0,0,1,1,3,4,4,4,...], identifying
   which equivalence block they belong to, and using that to generate the unique permutations.
   """
   def __init__(self, elements, composition):
@@ -28,8 +28,8 @@ class BlockPermutations(object):
 class UniquePermutations(object):
   """
   Given an ordered list of elements, possibly containing repeats, iterate over unique permutations.
-  Algorithm L from Knuth 'The Art of Computer Programming: Volume 4A: Pre-Fascicle 2B: Draft of Section 7.1.1.2 - Generating All Permutations'
-  found at http://www.cs.utsa.edu/~wagner/knuth/
+  Uses Algorithm L from Knuth 'The Art of Computer Programming: Volume 4A: Pre-Fascicle 2B: Draft of
+  Section 7.1.1.2 - Generating All Permutations' which can be found at http://www.cs.utsa.edu/~wagner/knuth/
   """
   def __init__(self, elements):
     """
@@ -58,21 +58,6 @@ class UniquePermutations(object):
     for sgn, index_permutation in self.iter_index_permutations_with_signature():
       yield sgn, tuple(self.elements[index] for index in index_permutation)
 
-
-
-# for debugging purposes:
-def parity(ref, per):
-  """
-  Given a reference iterable and a permuted iterable, return the parity of the permutation.
-  :param ref: reference iterable
-  :param per: permuted iterabl
-  """
-  sgn, per = +1, list(per)
-  for elem in ref:
-    i, j = ref.index(elem), per.index(elem)
-    sgn *= -1 if not i is j else +1
-    per[i], per[j] = per[j], per[i]
-  return sgn
 
 if __name__ == "__main__":
   perms = BlockPermutations('abcd', [1,2,1])
