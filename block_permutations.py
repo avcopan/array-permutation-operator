@@ -33,46 +33,4 @@ class BlockPermutations(object):
   def permute(self, permuted_elements):
     return lambda x: tuple(permuted_elements[self.elements.index(item)] if item in self.elements else item for item in x)
 
-if __name__ == "__main__":
-  import numpy as np
-  from parity import signature
-  # test 0,1/2,3 block permutations:
-  A = np.random.rand(10, 10, 10, 10)
-  # impose symmetries on A
-  symmetries = [sum(prod,()) for prod in it.product(it.permutations((0,1)),it.permutations((2,3)))]
-  A = sum(signature(range(4),sym)*A.transpose(sym) for sym in symmetries)
-  print("these should all be true:")
-  for sym in symmetries:
-    print np.all(A.transpose(sym).round(10) == signature(range(4),sym)*A.round(10))
-  print("some of these should be false:")
-  for p in it.permutations(range(4)):
-    print np.all(A.transpose(p).round(10) == signature(range(4),p)*A.round(10))
-  print np.linalg.norm(A)
-  # now try the block permutations
-  blkperms1 = BlockPermutations(range(4), [2,2])
-  A = sum(signature(range(4),perm)*A.transpose(perm) for perm in blkperms1.iter_permutations())
-  print("these should all be true:")
-  for p in it.permutations(range(4)):
-    print np.all(A.transpose(p).round(10) == signature(range(4),p)*A.round(10))
-  print np.linalg.norm(A)
 
-  # test 0/1,2/3 block permutations:
-  A = np.random.rand(10, 10, 10, 10)
-  # impose symmetries on A
-  symmetries = [sum(prod,()) for prod in it.product([(0,)],it.permutations((1,2)),[(3,)])]
-  A = sum(signature(range(4),sym)*A.transpose(sym) for sym in symmetries)
-  print("these should all be true:")
-  for sym in symmetries:
-    print np.all(A.transpose(sym).round(10) == signature(range(4),sym)*A.round(10))
-  print("some of these should be false:")
-  for p in it.permutations(range(4)):
-    print np.all(A.transpose(p).round(10) == signature(range(4),p)*A.round(10))
-  print np.linalg.norm(A)
-  # now try the block permutations
-  blkperms1 = BlockPermutations(range(4), [1,2,1])
-  A = sum(signature(range(4),perm)*A.transpose(perm) for perm in blkperms1.iter_permutations())
-  print("these should all be true:")
-  for p in it.permutations(range(4)):
-    print np.all(A.transpose(p).round(10) == signature(range(4),p)*A.round(10))
-  print np.linalg.norm(A)
-  
