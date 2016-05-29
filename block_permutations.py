@@ -1,10 +1,12 @@
-import itertools as it
-from permutation_signature import signature
-
 class BlockPermutations(object):
   """
   Given a list of elements, iterate over all unique permutations, treating subsets of the elements as equivalent.
+  This is done by mapping equivalent elements into a single element, applying all unique permutations to that,
+  and applying the same changes to the original set.
+  Uses Algorithm L from Knuth 'The Art of Computer Programming: Volume 4A: Pre-Fascicle 2B: Draft of
+  Section 7.1.1.2 - Generating All Permutations' which can be found at http://www.cs.utsa.edu/~wagner/knuth/
   """
+
   def __init__(self, elements, composition):
     """
     :param elements: an iterable; for example ('a','b','c','d')
@@ -14,23 +16,21 @@ class BlockPermutations(object):
     """
     self.elements = tuple(elements)
     self.nelem = len(elements)
-    ncomp = len(composition)
-    block_slices = [slice(sum(composition[:start]), sum(composition[:end])) for start, end in zip(range(0, ncomp), range(1, ncomp+1))]
-    blocks = [self.elements[slc] for slc in block_slices]
-    self.symmetries = [sum(permuted_blocks,()) for permuted_blocks in it.product(*(it.permutations(block) for block in blocks))]
-
-  def iter_permutations(self):
-    unique_permutations = []
-    for permuted_elements in it.permutations(self.elements):
-      if not any(self.permute(sym)(permuted_elements) in unique_permutations for sym in self.symmetries):
-        unique_permutations.append(permuted_elements)
-        yield permuted_elements
+    self.indices = sum((block_size * [ block_index ] for block_index, block_size in enumerate(composition)), [])
 
   def iter_permutations_with_signature(self):
-    for permutation in self.iter_permutations():
-      yield signature(self.elements, permutation), permutation
-
-  def permute(self, permuted_elements):
-    return lambda x: tuple(permuted_elements[self.elements.index(item)] if item in self.elements else item for item in x)
-
+    elements = list(self.elements)
+    indices  = list(self.indices)
+    sgn = 1
+    p0 = 0
+    while p0 >= 0:
+      yield sgn, tuple(elements)
+      p0 = next((p for p in reversed(range(self.nelem-1)) if indices[p ] < indices[p+1]), -1)
+      p1 = next((p for p in reversed(range(self.nelem))   if indices[p0] < indices[p  ]),  0)
+      indices [p0], indices [p1] = indices [p1], indices [p0]
+      elements[p0], elements[p1] = elements[p1], elements[p0]
+      sgn *= -1
+      indices [p0+1:] = indices [p0+1:][::-1]
+      elements[p0+1:] = elements[p0+1:][::-1]
+      sgn *= (-1) ** ( (self.nelem-p0-1)/2 )
 
