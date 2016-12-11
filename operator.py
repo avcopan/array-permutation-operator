@@ -1,8 +1,8 @@
 import numpy     as np
 import itertools as it
-from block_permutations import BlockPermutations
+from .permutations import BlockPermutations
 
-class P(object):
+class PermutationOperator(object):
 
   def __init__(self, axis_strings_with_bars, **kwargs):
     """
@@ -13,7 +13,7 @@ class P(object):
     self.axis_strings_with_bars = axis_strings_with_bars
     self.weight = 1.0 if not 'weight' in kwargs else kwargs['weight']
     axis_strings = axis_strings_with_bars.split('|')
-    element_sets, compositions = zip(*(P.process_axis_string(axis_string) for axis_string in axis_strings))
+    element_sets, compositions = zip(*(PermutationOperator.process_axis_string(axis_string) for axis_string in axis_strings))
     self.block_permutations = [BlockPermutations(element_set, composition) for element_set, composition in zip(element_sets, compositions)]
     self.elements = sum(element_sets, ())
 
@@ -31,15 +31,15 @@ class P(object):
     if hasattr(other, "transpose") and hasattr(other, "ndim"):
       return self.weight * sum(sgn * other.transpose(per) for sgn, per in self.iter_permutations_with_signature(other.ndim))
     elif isinstance(other, (float, int)):
-      return P(*self.axis_strings_with_bars, weight = self.weight * other)
+      return PermutationOperator(*self.axis_strings_with_bars, weight = self.weight * other)
     else:
-      raise Exception("Cannot left-multiply P permutation object with {:s}".format(type(other).__name__))
+      raise Exception("Cannot left-multiply PermutationOperator object with {:s}".format(type(other).__name__))
 
   def __rmul__(self, other):
     if isinstance(other, (float, int)):
-      return P(*self.axis_strings_with_bars, weight = self.weight * other)
+      return PermutationOperator(*self.axis_strings_with_bars, weight = self.weight * other)
     else:
-      raise Exception("Cannot right-multiply P permutation object with {:s}".format(type(other).__name__))
+      raise Exception("Cannot right-multiply PermutationOperator object with {:s}".format(type(other).__name__))
 
   def permute(self, permuted_elements):
     return lambda x: tuple(permuted_elements[self.elements.index(item)] if item in self.elements else item for item in x)
@@ -54,3 +54,7 @@ class P(object):
     except:
       raise Exception("Invalid string {:s} passed as constructor argument.".format(axis_string))
 
+
+if __name__ == "__main__":
+  for sgn, per in PermutationOperator("0,1/2,3").iter_permutations_with_signature(4):
+    print(sgn, per)

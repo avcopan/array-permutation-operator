@@ -9,7 +9,6 @@ def disjoint_cycles_to_permutation(elements, cycles):
 
 if __name__ == "__main__":
   import itertools as it
-  from parity import signature
   perms = list(it.permutations(range(4)))
   unique_perms = []
   for i, p1 in enumerate(perms):
@@ -18,8 +17,6 @@ if __name__ == "__main__":
       unique_perms.append(p1)
   print unique_perms
 
-  import itertools as it
-  from parity import signature
   perms = list(it.permutations(range(4)))
   unique_perms = []
   has_symmetries = [[(0,1)],[(2,3)],[(0,1),(2,3)]]

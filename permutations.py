@@ -32,5 +32,9 @@ class BlockPermutations(object):
       sgn *= -1
       indices [p0+1:] = indices [p0+1:][::-1]
       elements[p0+1:] = elements[p0+1:][::-1]
-      sgn *= (-1) ** ( (self.nelem-p0-1)/2 )
+      sgn *= (-1) ** ( (self.nelem-p0-1)//2 )
 
+
+if __name__ == "__main__":
+  for sgn, per in BlockPermutations(('a', 'b', 'c', 'd'), composition=(2,2)).iter_permutations_with_signature():
+    print(sgn, per)
