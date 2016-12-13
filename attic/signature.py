@@ -11,3 +11,10 @@ def signature(ref, per):
     per[i], per[j] = per[j], per[i]
   return sgn
 
+
+if __name__ == "__main__":
+  import itertools as it
+
+  ref = (0, 1, 2)
+  for per in it.permutations(ref):
+    print(signature(ref, per), per)

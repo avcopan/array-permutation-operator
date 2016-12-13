@@ -1,38 +1,64 @@
 import pytest
 import numpy as np
 
-def test__axis_permutations_exception():
-  from tensorshuffle.permutations import BlockPermutations
-  from tensorshuffle.operator     import AxisPermutations
+def test__permutation_operator_composition_1():
+  from tensorshuffle.operator import PermutationOperator as P
 
-  with pytest.raises(Exception):
-    pobject = BlockPermutations(('a', 'b'), composition = (1,1))
-    perms = list(AxisPermutations(pobject, ndim=5).iter_signed_permutations())
+  array1 = np.load("test/random_arrays/15x15.npy")
 
-def test__axis_permutations_composition_1_1():
-  from tensorshuffle.permutations import BlockPermutations
-  from tensorshuffle.operator     import AxisPermutations
+  array2 = P("0") * array1
 
-  pobject = BlockPermutations((1, 3), composition = (1,1))
-  perms = list(AxisPermutations(pobject, ndim=5).iter_signed_permutations())
-  assert(
-    perms == [
-      ( 1, (0, 1, 2, 3, 4)),
-      (-1, (0, 3, 2, 1, 4))
-    ]
-  )
+  assert(np.allclose(array1, array2))
 
 def test__permutation_operator_composition_1_1():
   from tensorshuffle.operator import PermutationOperator as P
 
   array1 = np.load("test/random_arrays/15x15.npy")
-  array2 = np.load("test/random_arrays/15x15.npy")
 
-  #print( P("0/1") * array1 )
-  #print(array1)
-  #print( (P("0/1") * array1) == array1 )
+  array2 = P("0/1") * array1
+  array3 = array1 - array1.transpose()
+
+  assert(np.allclose(array2, array3))
+
+def test__permutation_operator_composition_1_2():
+  from tensorshuffle.operator import PermutationOperator as P
+
+  array1 = np.load("test/random_arrays/15x15x15.npy")
+
+  array2 = P("1/2") * array1
+
+  array3 = P("0/1,2") * array2
+  array4 = array2 - array2.transpose((1, 0, 2)) - array2.transpose((2, 1, 0))
+  assert(np.allclose(array3, array4))
+
+def test__permutation_operator_composition_1_1_1():
+  from tensorshuffle.operator import PermutationOperator as P
+
+  array1 = np.load("test/random_arrays/15x15x15.npy")
+
+  array2 = P("0/1/2") * array1
+  array3 = (array1
+            - array1.transpose(0, 2, 1)
+            - array1.transpose(1, 0, 2)
+            + array1.transpose(1, 2, 0)
+            + array1.transpose(2, 0, 1)
+            - array1.transpose(2, 1, 0))
+  assert(np.allclose(array2, array3))
+
+def test__permutation_operator_composition_2_1():
+  from tensorshuffle.operator import PermutationOperator as P
+
+  array1 = np.load("test/random_arrays/15x15x15.npy")
+
+  array2 = P("0/1") * array1
+
+  array3 = P("0,1/2") * array2
+  array4 = array2 - array2.transpose((2, 1, 0)) - array2.transpose((0, 2, 1))
+  assert(np.allclose(array3, array4))
 
 if __name__ == "__main__":
-  test__axis_permutations_exception()
-  test__axis_permutations_composition_1_1()
+  test__permutation_operator_composition_1()
   test__permutation_operator_composition_1_1()
+  test__permutation_operator_composition_1_2()
+  test__permutation_operator_composition_1_1_1()
+  test__permutation_operator_composition_2_1()
