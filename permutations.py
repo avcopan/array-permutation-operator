@@ -1,8 +1,7 @@
 import itertools as it
 
 class BlockPermutations(object):
-  """
-  Unique permutations, treating subsets ("blocks") of the items as equivalent.
+  """Unique permutations, treating subsets of the items as indistinguishable.
 
   This is done by mapping equivalent items into a single element, applying all
   unique permutations to that, and applying the same changes to the original
@@ -29,8 +28,7 @@ class BlockPermutations(object):
                       str(self.composition), self.nitems))
 
   def iter_signed_permutations(self):
-    """
-    Iterate over signed permutations.
+    """Iterate over signed permutations.
 
     Omit permutations of equivalent items by mapping the list of items into a
     list of equivalence class indices. For example, if self.items equals
@@ -62,8 +60,7 @@ class BlockPermutations(object):
 
 
 class AppliedPermutations(object):
-  """
-  Permutations applied to a larger set containing the permuted items.
+  """Permutations applied to a larger set containing the permuted items.
 
   Attributes:
     permutation_object: A permutation object.  Must have `items` as an attribute
@@ -88,8 +85,7 @@ class AppliedPermutations(object):
                       str(self.items), str(self.operand_set)))
 
   def iter_signed_permutations(self):
-    """
-    Iterate over signed permutations.
+    """Iterate over signed permutations.
 
     Iterate over permutations in `self.permutation_object`, applying them to
     `self.operand_set`.
@@ -103,8 +99,7 @@ class AppliedPermutations(object):
       yield sgn, self._make_permuted_operand_set(per)
 
   def _make_permuted_operand_set(self, permuted_items):
-    """
-    Apply a permutation to `self.operand_set` and return the result.
+    """Apply a permutation to `self.operand_set` and return the result.
     """
     return tuple(permuted_items[self.items.index(item)] if item in self.items
                  else item for item in self.operand_set)

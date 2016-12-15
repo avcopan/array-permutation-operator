@@ -2,8 +2,7 @@ import numpy as np
 from .permutations import BlockPermutations, AppliedPermutations
 
 class PermutationOperator(object):
-  """
-  Operator for applying antisymmetrizing operations to numpy arrays.
+  """Operator for applying antisymmetrizing operations to numpy arrays.
 
   Attributes:
     axis_string: A string of integers separated by commas and forward slashes,
@@ -39,8 +38,7 @@ class PermutationOperator(object):
   """
 
   def __init__(self, axis_string, _weight = 1.0, _left_operator = None):
-    """
-    Initialize PermutationOperator object.
+    """Initialize PermutationOperator object.
 
     After defining this object's class attributes, build a BlockPermutations
     object to achieve the antisymmetrization defined by `axis_string`.  For
@@ -67,8 +65,7 @@ class PermutationOperator(object):
       raise Exception("{:s} is not a valid axis_string.".format(axis_string))
 
   def __mul__(self, other):
-    """
-    Left-multiply `other` by `self`.
+    """Left-multiply `other` by `self`.
 
     Return the appropriate value of (`self * other`).
     If `other` is a scalar value, pass it to `self.__rmul__()`.
@@ -109,8 +106,7 @@ class PermutationOperator(object):
                       .format(type(other).__name__))
 
   def __rmul__(self, other):
-    """
-    Right-multiply `other` by `self`.
+    """Right-multiply `other` by `self`.
 
     Return the appropriate value of (`other * self`).  If `other` is a scalar
     value, return a copy of `self` with `self._weight` scaled by `other`.  If
