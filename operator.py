@@ -64,6 +64,9 @@ class PermutationOperator(object):
     except:
       raise Exception("{:s} is not a valid axis_string.".format(axis_string))
 
+  def __neg__(self):
+    return -1 * self
+
   def __mul__(self, other):
     """Left-multiply `other` by `self`.
 
@@ -104,6 +107,7 @@ class PermutationOperator(object):
     else:
       raise Exception("PermutationOperator cannot be left-multiplied with {:s}"
                       .format(type(other).__name__))
+
 
   def __rmul__(self, other):
     """Right-multiply `other` by `self`.
