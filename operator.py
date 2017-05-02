@@ -64,6 +64,10 @@ class PermutationOperator(object):
     except:
       raise Exception("{:s} is not a valid axis_string.".format(axis_string))
 
+
+  def __pos__(self):
+    return self
+
   def __neg__(self):
     return -1 * self
 
