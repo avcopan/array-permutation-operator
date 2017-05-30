@@ -1,2 +1,2 @@
-from .operator import PermutationOperator
-from .permutations import BlockPermutations, AppliedPermutations
+from .permutation import PermutationHelper
+from .shuffle import sloppy_shuffles
