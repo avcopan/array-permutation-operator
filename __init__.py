@@ -1,2 +1,2 @@
-from .permutation import PermutationHelper
+from .helper import PermutationHelper
 from .shuffle import sloppy_shuffles

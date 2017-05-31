@@ -1,10 +1,11 @@
-def test__sloppy_shuffles_composition_1_1_1():
-    from permutils.shuffle import sloppy_shuffles
+from permutils.shuffle import sloppy_shuffles
 
-    it = ('a', 'b', 'c')
-    cmp = (1, 1, 1)
-    unsigned_shuffles = list(sloppy_shuffles(it, cmp))
-    signed_shuffle = list(sloppy_shuffles(it, cmp, yield_signature=True))
+
+def test__sloppy_shuffles_composition_1_1_1():
+    items = ('a', 'b', 'c')
+    comp = (1, 1, 1)
+    unsigned_shuffles = list(sloppy_shuffles(items, comp))
+    signed_shuffle = list(sloppy_shuffles(items, comp, yield_signature=True))
     assert (
         unsigned_shuffles == [
             ('a', 'b', 'c'),
@@ -28,12 +29,10 @@ def test__sloppy_shuffles_composition_1_1_1():
 
 
 def test__sloppy_shuffles_composition_1_2():
-    from permutils.shuffle import sloppy_shuffles
-
-    it = ('a', 'b', 'c')
-    cmp = (1, 2)
-    unsigned_shuffles = list(sloppy_shuffles(it, cmp))
-    signed_shuffle = list(sloppy_shuffles(it, cmp, yield_signature=True))
+    items = ('a', 'b', 'c')
+    comp = (1, 2)
+    unsigned_shuffles = list(sloppy_shuffles(items, comp))
+    signed_shuffle = list(sloppy_shuffles(items, comp, yield_signature=True))
     assert (
         unsigned_shuffles == [
             ('a', 'b', 'c'),
@@ -51,12 +50,10 @@ def test__sloppy_shuffles_composition_1_2():
 
 
 def test__sloppy_shuffles_composition_1_3():
-    from permutils.shuffle import sloppy_shuffles
-
-    it = ('a', 'b', 'c', 'd')
-    cmp = (1, 3)
-    unsigned_shuffles = list(sloppy_shuffles(it, cmp))
-    signed_shuffle = list(sloppy_shuffles(it, cmp, yield_signature=True))
+    items = ('a', 'b', 'c', 'd')
+    comp = (1, 3)
+    unsigned_shuffles = list(sloppy_shuffles(items, comp))
+    signed_shuffle = list(sloppy_shuffles(items, comp, yield_signature=True))
     assert (
         unsigned_shuffles == [
             ('a', 'b', 'c', 'd'),
@@ -76,12 +73,10 @@ def test__sloppy_shuffles_composition_1_3():
 
 
 def test__sloppy_shuffles_composition_2_2():
-    from permutils.shuffle import sloppy_shuffles
-
-    it = ('a', 'b', 'c', 'd')
-    cmp = (2, 2)
-    unsigned_shuffles = list(sloppy_shuffles(it, cmp))
-    signed_shuffle = list(sloppy_shuffles(it, cmp, yield_signature=True))
+    items = ('a', 'b', 'c', 'd')
+    comp = (2, 2)
+    unsigned_shuffles = list(sloppy_shuffles(items, comp))
+    signed_shuffle = list(sloppy_shuffles(items, comp, yield_signature=True))
     assert (
         unsigned_shuffles == [
             ('a', 'b', 'c', 'd'),
@@ -105,12 +100,10 @@ def test__sloppy_shuffles_composition_2_2():
 
 
 def test__sloppy_shuffles_composition_1_2_1():
-    from permutils.shuffle import sloppy_shuffles
-
-    it = ('a', 'b', 'c', 'd')
-    cmp = (1, 2, 1)
-    unsigned_shuffles = list(sloppy_shuffles(it, cmp))
-    signed_shuffle = list(sloppy_shuffles(it, cmp, yield_signature=True))
+    items = ('a', 'b', 'c', 'd')
+    comp = (1, 2, 1)
+    unsigned_shuffles = list(sloppy_shuffles(items, comp))
+    signed_shuffle = list(sloppy_shuffles(items, comp, yield_signature=True))
     assert (
         unsigned_shuffles == [
             ('a', 'b', 'c', 'd'),
