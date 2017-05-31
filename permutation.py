@@ -15,7 +15,7 @@ class PermutationHelper(object):
         self.items = tuple(items)
         self.nitems = len(self.items)
 
-    def make_permuter(self, permutation):
+    def make_element_permuter(self, permutation):
         """Makes a permutation function for individual items.
         
         Args:
@@ -27,7 +27,7 @@ class PermutationHelper(object):
         return lambda itm: (itm if itm not in self.items
                             else permutation[self.items.index(itm)])
 
-    def make_tuple_permuter(self, permutation):
+    def make_permuter(self, permutation):
         """Makes a permutation function for iterables.
 
         Args:
@@ -36,7 +36,7 @@ class PermutationHelper(object):
         Returns:
             function: The permuter.
         """
-        permuter = self.make_permuter(permutation)
+        permuter = self.make_element_permuter(permutation)
         return lambda iterable: tuple(map(permuter, iterable))
 
     def get_signature(self, permutation):
